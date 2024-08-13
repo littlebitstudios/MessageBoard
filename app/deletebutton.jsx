@@ -1,4 +1,5 @@
 "use client";
+
 export default function DeleteButton({id, fetchFunction}) {
     async function deletePost() {
         await fetch(`/api/posts/${id}`, {
