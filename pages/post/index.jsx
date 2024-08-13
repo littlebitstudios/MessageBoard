@@ -1,12 +1,12 @@
 import React from 'react';
-import '../styles/main.css';
-import PostForm from "/app/postform.jsx";
+import '/styles/main.css';
+import NewPostForm from '../../app/newpostform';
 
 export default function HomePage() {
   return (
     <>
       <h1>Write a Post</h1>
-      <PostForm />
+      <NewPostForm />
     </>
   );
 }

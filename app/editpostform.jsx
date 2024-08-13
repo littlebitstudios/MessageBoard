@@ -1,25 +1,31 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 
-export default function PostForm() {
+export default function EditPostForm({postId}) {
     const [profilePicUrl, setProfilePicUrl] = useState('');
     const [displayName, setDisplayName] = useState('');
     const [username, setUsername] = useState('');
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        const savedProfile = localStorage.getItem('defaultProfile');
-        if (savedProfile) {
-            const profile = JSON.parse(savedProfile);
-            setProfilePicUrl(profile.profilePicUrl);
-            setDisplayName(profile.displayName);
-            setUsername(profile.username);
+        if (!postId) {
+            return;
         }
-    }, []);
+        fetch(`/api/posts/${postId}`)
+            .then((response) => response.json())
+            .then((data) => {
+                setContent(data.content);
+                setProfilePicUrl(data.profilePicture);
+                setDisplayName(data.displayname);
+                setUsername(data.username);
+            });
+    }, [postId]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch('/api/posts', {
-            method: 'POST',
+        fetch(`/api/posts/${postId}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -75,7 +81,6 @@ export default function PostForm() {
                 cols="70"
             /><br />
             <button type="submit">Post</button>
-            <button type="button" onClick={setDefaultProfile}>Save Profile</button>
             <button type="button" onClick={clearForm}>Clear Form</button>
             <a href="/" className='button'>Cancel</a>
         </form>
