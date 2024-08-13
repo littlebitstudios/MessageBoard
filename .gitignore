@@ -47,3 +47,6 @@ coverage/
 
 # MacOS specific files
 .DS_Store
+
+# PNPM lock
+pnpm-lock.yaml
