@@ -7,9 +7,9 @@ export const prisma = new PrismaClient();
 
 export default async function HomePage() {
   return (
-    <SessionProviderWrapper>
+    <>
       <h1>LittleBit's Message Board</h1>
       <PostContainer />
-    </SessionProviderWrapper>
+    </>
   );
 }
