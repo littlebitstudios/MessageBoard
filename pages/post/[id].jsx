@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import '/styles/main.css';
 import EditPostForm from '/app/editpostform';
 
-export default function HomePage() {
+export default function Page() {
   const params = useRouter();
   console.log(params);
 

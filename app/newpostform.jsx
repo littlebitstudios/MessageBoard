@@ -20,13 +20,17 @@ export default function NewPostForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const defaultProfilePicUrl = 'https://img.icons8.com/fluency/48/person-male.png'; // Replace with your default profile picture URL
+        const finalProfilePicUrl = profilePicUrl || defaultProfilePicUrl;
+
         fetch('/api/posts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                profilePicture: profilePicUrl,
+                profilePicture: finalProfilePicUrl,
                 displayname: displayName,
                 username: username,
                 content: content,
@@ -36,13 +40,13 @@ export default function NewPostForm() {
         window.location.href = '/';
     };
 
-    function setDefaultProfile(){
-        const profile = {profilePicUrl: profilePicUrl, displayName: displayName, username: username};
+    function setDefaultProfile() {
+        const profile = { profilePicUrl: profilePicUrl, displayName: displayName, username: username };
         localStorage.setItem('defaultProfile', JSON.stringify(profile));
         alert("Profile saved. The profile boxes will autofill when you view this page again.")
     }
 
-    function clearForm(){
+    function clearForm() {
         setProfilePicUrl('');
         setDisplayName('');
         setUsername('');

@@ -10,6 +10,7 @@ export default async function HomePage() {
     <>
       <h1>LittleBit's Message Board</h1>
       <PostContainer />
+      <a className="button" href="/about">About this website</a>
     </>
   );
 }
