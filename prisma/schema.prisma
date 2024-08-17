@@ -19,3 +19,10 @@ model Post {
   content String
   createdAt DateTime @default(now())
 }
+
+model Profile {
+  id String @id @default(cuid())
+  displayname String
+  username String
+  profilePicture String
+}
