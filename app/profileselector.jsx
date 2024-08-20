@@ -191,7 +191,9 @@ export default function ProfileSelector(){
                     <a className="button" href={`/profile/${selectedProfile.id}`}>Edit Profile</a>
                     <button className={selectedProfile.id === localStorage.getItem('defaultProfileId') ? 'grey-button' : ''} onClick={setDefaultProfile}>
                         {selectedProfile.id === localStorage.getItem('defaultProfileId') ? 'Profile in use' : 'Use this Profile'}
-                    </button><br/>
+                    </button>
+                    <a className="button" href={`/profile/import/qrgen/${selectedProfile.id}`}>Generate QR Code</a>
+                    <br/>
                     <button className="destructive-button" onClick={deleteProfileGlobal}>Delete Profile (for everyone)</button>
                     <button className="destructive-button" onClick={deleteProfileLocal}>Delete Profile (this device)</button>
                 </div>
