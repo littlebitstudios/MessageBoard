@@ -3,26 +3,23 @@
 import { useState, useEffect } from 'react';
 
 export default function NewPostForm() {
-    const [profilePicUrl, setProfilePicUrl] = useState('');
-    const [displayName, setDisplayName] = useState('');
-    const [username, setUsername] = useState('');
+    const [profileId, setProfileId] = useState('');
+    const [profile, setProfile] = useState({});
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        const savedProfile = localStorage.getItem('defaultProfile');
-        if (savedProfile) {
-            const profile = JSON.parse(savedProfile);
-            setProfilePicUrl(profile.profilePicUrl);
-            setDisplayName(profile.displayName);
-            setUsername(profile.username);
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+            const profileId = localStorage.getItem('defaultProfileId');
+            setProfileId(profileId);
+
+            fetch(`/api/profiles/${profileId}`).then((response) => response.json()).then((data) => {
+                setProfile(data);
+            });
         }
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const defaultProfilePicUrl = 'https://img.icons8.com/fluency/48/person-male.png'; // Replace with your default profile picture URL
-        const finalProfilePicUrl = profilePicUrl || defaultProfilePicUrl;
 
         fetch('/api/posts', {
             method: 'POST',
@@ -30,9 +27,7 @@ export default function NewPostForm() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                profilePicture: finalProfilePicUrl,
-                displayname: displayName,
-                username: username,
+                profileId: profileId,
                 content: content,
             }),
         });
@@ -40,39 +35,16 @@ export default function NewPostForm() {
         window.location.href = '/';
     };
 
-    function setDefaultProfile() {
-        const profile = { profilePicUrl: profilePicUrl, displayName: displayName, username: username };
-        localStorage.setItem('defaultProfile', JSON.stringify(profile));
-        alert("Profile saved. The profile boxes will autofill when you view this page again.")
-    }
-
     function clearForm() {
-        setProfilePicUrl('');
-        setDisplayName('');
-        setUsername('');
         setContent('');
     }
 
     return (
         <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Profile Picture URL"
-                value={profilePicUrl}
-                onChange={(e) => setProfilePicUrl(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="Display Name"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            /><br />
+            <p>
+                Posting as {profile.displayname} (@{profile.username})<br/>
+                Go to the <a href="/profile">Profile Manager</a> to switch profiles
+            </p>
             <textarea
                 placeholder="What's on your mind?"
                 value={content}
@@ -81,7 +53,6 @@ export default function NewPostForm() {
                 cols="70"
             /><br />
             <button type="submit">Post</button>
-            <button type="button" onClick={setDefaultProfile}>Save Profile</button>
             <button type="button" onClick={clearForm}>Clear Form</button>
             <a href="/" className='button'>Cancel</a>
         </form>

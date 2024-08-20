@@ -3,9 +3,8 @@
 import { useState, useEffect } from 'react';
 
 export default function EditPostForm({postId}) {
-    const [profilePicUrl, setProfilePicUrl] = useState('');
-    const [displayName, setDisplayName] = useState('');
-    const [username, setUsername] = useState('');
+    const [profileId, setProfileId] = useState('');
+    const [profile, setProfile] = useState({});
     const [content, setContent] = useState('');
 
     useEffect(() => {
@@ -15,11 +14,21 @@ export default function EditPostForm({postId}) {
         fetch(`/api/posts/${postId}`)
             .then((response) => response.json())
             .then((data) => {
+                setProfileId(data.profileId);
+                setPostId(data.id);
                 setContent(data.content);
-                setProfilePicUrl(data.profilePicture);
-                setDisplayName(data.displayname);
-                setUsername(data.username);
             });
+
+        fetch(`/api/profiles/${profileId}`).then((response) => response.json()).then((data) => {
+            setProfile(data);
+        });
+
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+            if (profileId !== localStorage.getItem('defaultProfileId')){
+                alert('You cannot edit this post, you are not its author. If you are the author, go to the Profile Manager and choose the correct profile.');
+                window.location.href = '/';
+            }
+        }
     }, [postId]);
 
     const handleSubmit = (e) => {
@@ -30,21 +39,12 @@ export default function EditPostForm({postId}) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                profilePicture: profilePicUrl,
-                displayname: displayName,
-                username: username,
                 content: content,
             }),
         });
         alert('Post submitted! Returning to the main page.');
         window.location.href = '/';
     };
-
-    function setDefaultProfile(){
-        const profile = {profilePicUrl: profilePicUrl, displayName: displayName, username: username};
-        localStorage.setItem('defaultProfile', JSON.stringify(profile));
-        alert("Profile saved. The profile boxes will autofill when you view this page again.")
-    }
 
     function clearForm(){
         setProfilePicUrl('');
@@ -55,24 +55,10 @@ export default function EditPostForm({postId}) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Profile Picture URL"
-                value={profilePicUrl}
-                onChange={(e) => setProfilePicUrl(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="Display Name"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            /><br />
+            <p>
+                Editing {profile.displayname} ({profile.username})'s post
+                Post ID {postId}
+            </p>
             <textarea
                 placeholder="What's on your mind?"
                 value={content}
