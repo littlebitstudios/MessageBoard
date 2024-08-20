@@ -21,7 +21,10 @@ export default function ProfileDirectImport() {
     }, [profileId]);
 
     function saveProfileIdToBrowser(id) {
-        const profileIds = JSON.parse(localStorage.getItem('profileIds'));
+        var profileIds = JSON.parse(localStorage.getItem('profileIds'));
+        if (!profileIds) {
+            profileIds = [];
+        }
 
         if (profileIds.includes(id)) {
             alert('Profile already imported.');
