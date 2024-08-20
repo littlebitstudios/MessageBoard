@@ -15,10 +15,14 @@ export default function EditPostForm({postId}) {
             .then((response) => response.json())
             .then((data) => {
                 setProfileId(data.profileId);
-                setPostId(data.id);
                 setContent(data.content);
             });
+    }, [postId]);
 
+    useEffect(() => {
+        if (!profileId) {
+            return;
+        }
         fetch(`/api/profiles/${profileId}`).then((response) => response.json()).then((data) => {
             setProfile(data);
         });
@@ -29,7 +33,7 @@ export default function EditPostForm({postId}) {
                 window.location.href = '/';
             }
         }
-    }, [postId]);
+    }, [profileId]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -56,7 +60,7 @@ export default function EditPostForm({postId}) {
     return (
         <form onSubmit={handleSubmit}>
             <p>
-                Editing {profile.displayname} ({profile.username})'s post
+                Editing {profile.displayname} ({profile.username})'s post<br/>
                 Post ID {postId}
             </p>
             <textarea
