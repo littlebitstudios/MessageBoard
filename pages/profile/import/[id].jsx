@@ -45,6 +45,12 @@ export default function ProfileDirectImport() {
                             .then((response) => response.json())
                             .then((data) => {
                                 alert(`Profile imported. Welcome back, ${data.displayname}! Going to the Profile Manager.`);
+
+                                if (profileIds.length === 1) {
+                                    localStorage.setItem('defaultProfileId', id);
+                                    alert("One more thing before we take you to the Profile Manager. Since this is your first profile, we automatically set it as your active profile.");
+                                }
+
                                 window.location.href = '/profile';
                             });
                     }

@@ -145,6 +145,12 @@ export default function ProfileSelector(){
                             .then((response) => response.json())
                             .then((data) => {
                                 alert(`Profile imported. Welcome back, ${data.displayname}! The page will refresh.`);
+
+                                if (profileIds.length === 1) {
+                                    localStorage.setItem('defaultProfileId', id);
+                                    alert("One more thing before we refresh the page. Since this is your first profile, we automatically set it as your active profile.");
+                                }
+
                                 window.location.reload();
                             });
                     }
