@@ -23,4 +23,5 @@ model Profile {
   displayname String
   username String
   profilePicture String
+  moderator Boolean @default(false)
 }

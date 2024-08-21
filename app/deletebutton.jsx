@@ -14,8 +14,11 @@ export default function DeleteButton({id, fetchFunction}) {
     async function deletePost() {
         if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
             if (authorProfileId !== localStorage.getItem('defaultProfileId')) {
-                alert('You cannot delete this post, you are not its author. If you are the author, go to the Profile Manager and choose the correct profile.');
-                return;
+                const profile = await fetch(`/api/profiles/${localStorage.getItem('defaultProfileId')}`).then((response) => response.json());
+                if (!profile.moderator){
+                    alert(`Cannot delete this post; you must be the post's author or a moderator to delete a post. If you are able to delete this post, please select the correct profile in the Profile Manager.`);
+                    return;
+                }
             }
         }
 

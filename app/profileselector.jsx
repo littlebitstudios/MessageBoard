@@ -32,7 +32,7 @@ export default function ProfileSelector(){
     function setDefaultProfile() {
         if (selectedProfile.id !== localStorage.getItem('defaultProfileId')) {
             localStorage.setItem('defaultProfileId', selectedProfile.id);
-            alert('Default profile set!');
+            alert('Active profile set! The page will refresh.');
             window.location.reload();
         }
     }
@@ -187,6 +187,7 @@ export default function ProfileSelector(){
                         Display Name: {selectedProfile.displayname}<br />
                         Username: {selectedProfile.username}<br />
                         Profile Picture URL: {selectedProfile.profilePicture || 'None'}
+                        {selectedProfile.moderator && <><br /><strong>This profile is a moderator</strong></>}
                     </p>
                     <a className="button" href={`/profile/${selectedProfile.id}`}>Edit Profile</a>
                     <button className={selectedProfile.id === localStorage.getItem('defaultProfileId') ? 'grey-button' : ''} onClick={setDefaultProfile}>
