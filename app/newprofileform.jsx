@@ -30,6 +30,10 @@ export default function NewProfileForm({profileId}) {
 
             // Confirm action with user and return to profile manager
             alert(`Profile created! Its Profile ID is ${data.id}. Keep the Profile ID safe as you need it to use the profile on another device. Returning to the profile manager.`);
+            if (profileIds.length === 1) {
+                localStorage.setItem('defaultProfileId', id);
+                alert("One more thing before we refresh the page. Since this is your first profile, we automatically set it as your active profile.");
+            }
             window.location.href = '/profile';
         })
         .catch(error => {
