@@ -58,21 +58,19 @@ export default function EditPostForm({postId}) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <p>
-                Editing {profile.displayname} ({profile.username})'s post<br/>
-                Post ID {postId}
-            </p>
+        <form onSubmit={handleSubmit} style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems:"center" }}>
             <textarea
                 placeholder="What's on your mind?"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows="10"
-                cols="70"
-            /><br />
-            <button type="submit">Post</button>
-            <button type="button" onClick={clearForm}>Clear Form</button>
-            <a href="/" className='button'>Cancel</a>
+                cols="50"
+            />
+            <div style={{ display: "flex", justifyContent: "center", alignItems:"center", marginTop:"10px"}}>
+                <button type="submit"><strong>Save</strong></button>
+                <button type="button" onClick={clearForm}>Clear Form</button>
+                <a style={{marginLeft:"5px"}} href="/" className='button'>Cancel</a>
+            </div>
         </form>
     );
 }
