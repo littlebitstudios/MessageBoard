@@ -18,6 +18,9 @@ export default async function HomePage() {
         <ActiveProfileContainer />
       </div>
       <PostContainer />
+      <div style={{textAlign:"center", marginTop:"15px"}}>
+        LittleBit's Message Board - <a href="/about">About this page</a> - Icons on this website by <a href="https://icons8.com">Icons8</a>
+      </div>
     </>
   );
 }
