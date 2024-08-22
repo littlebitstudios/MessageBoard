@@ -10,7 +10,10 @@ export default function Page() {
 
   return (
     <>
-      <h1>New Profile</h1>
+      <div className="header-container">
+        <a href="/" title="Back to main page" className='image-button'><img src="https://img.icons8.com/?size=32&id=86960&format=png&color=FFFFFF"/></a>
+        <h1>New Profile</h1>
+      </div>
       <NewProfileForm/>
     </>
   );
