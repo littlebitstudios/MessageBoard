@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import ProfileContainer from '/app/profilecontainer.jsx';
 
-export default function ProfileSelector(){
+export default function ProfileSelector() {
     const [profiles, setProfiles] = useState([]);
     const [selectedProfile, setSelectedProfile] = useState({});
     const [newProfileId, setNewProfileId] = useState('');
@@ -38,7 +39,7 @@ export default function ProfileSelector(){
     }
 
     function deleteProfileGlobal() {
-        if(selectedProfile.id === localStorage.getItem('defaultProfileId')) {
+        if (selectedProfile.id === localStorage.getItem('defaultProfileId')) {
             alert(`You can't delete your active profile. Please switch to another profile and try again.`);
             return;
         }
@@ -62,7 +63,7 @@ export default function ProfileSelector(){
     }
 
     function deleteProfileLocal() {
-        if(selectedProfile.id === localStorage.getItem('defaultProfileId')) {
+        if (selectedProfile.id === localStorage.getItem('defaultProfileId')) {
             alert(`You can't delete your active profile. Please switch to another profile and try again.`);
             return;
         }
@@ -101,7 +102,7 @@ export default function ProfileSelector(){
 
     function globalDataWipe() {
         if (window.confirm(`Do you REALLY want to DELETE ALL OF YOUR PROFILES from the server? This will delete all profiles your browser holds FOR EVERYONE. Posts made with your profiles remain on the board but will be anonymized. You will not be able to re-import these profiles.`)) {
-            const deleteRequests = profileIds.map(id => 
+            const deleteRequests = profileIds.map(id =>
                 fetch(`/api/profiles/${id}`, {
                     method: 'DELETE',
                 }).then(response => {
@@ -111,7 +112,7 @@ export default function ProfileSelector(){
                     return response;
                 })
             );
-    
+
             Promise.all(deleteRequests)
                 .then(() => {
                     localStorage.clear();
@@ -165,49 +166,55 @@ export default function ProfileSelector(){
     return (
         <>
             <h2>Import Profile</h2>
-            <form onSubmit={handleSaveProfileId}>
+            <form onSubmit={handleSaveProfileId} style={{ display: "flex", justifyContent: "center" }}>
                 <input
                     size="30"
-                    type="text" 
-                    value={newProfileId} 
-                    onChange={handleNewProfileIdChange} 
-                    placeholder="Enter Profile ID to import"  
-                    required 
+                    type="text"
+                    value={newProfileId}
+                    onChange={handleNewProfileIdChange}
+                    placeholder="Enter Profile ID to import"
+                    required
                 />
-                <button type="submit">Save</button><br/>
+                <button type="submit">Save</button><br />
             </form>
             <h2>Edit Existing Profiles</h2>
-            <select value={selectedProfile.id || ''} onChange={handleSelectedProfileChange}>
-                <option value="" disabled>Select a profile</option>
-                {profiles.map((profile) => (
-                    <option key={profile.id} value={profile.id}>
-                        {profile.displayname} (@{profile.username})
-                    </option>
-                ))}
-            </select>
-            {selectedProfile.id && (
-                <div>
-                    <p>
-                        <img width="64" height="64" src={selectedProfile.profilePicture || 'https://img.icons8.com/fluency/64/person-male.png'} alt="Profile Picture" /><br />
-                        ID: {selectedProfile.id}<br />
-                        Display Name: {selectedProfile.displayname}<br />
-                        Username: {selectedProfile.username}<br />
-                        Profile Picture URL: {selectedProfile.profilePicture || 'None'}
-                        {selectedProfile.moderator && <><br /><strong>This profile is a moderator</strong></>}
-                    </p>
-                    <a className="button" href={`/profile/${selectedProfile.id}`}>Edit Profile</a>
-                    <button className={selectedProfile.id === localStorage.getItem('defaultProfileId') ? 'grey-button' : ''} onClick={setDefaultProfile}>
-                        {selectedProfile.id === localStorage.getItem('defaultProfileId') ? 'Profile in use' : 'Use this Profile'}
-                    </button>
-                    <a className="button" href={`/profile/import/qrgen/${selectedProfile.id}`}>Generate QR Code</a>
-                    <br/>
-                    <button className="destructive-button" onClick={deleteProfileGlobal}>Delete Profile (for everyone)</button>
-                    <button className="destructive-button" onClick={deleteProfileLocal}>Delete Profile (this device)</button>
-                </div>
-            )}
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: "column" }}>
+                <select value={selectedProfile.id || ''} onChange={handleSelectedProfileChange} style={{ marginBottom: "30px" }}>
+                    <option value="" disabled>Select a profile</option>
+                    {profiles.map((profile) => (
+                        <option key={profile.id} value={profile.id}>
+                            {profile.displayname} (@{profile.username})
+                        </option>
+                    ))}
+                </select>
+                {selectedProfile.id && (
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: "column" }}>
+                        <ProfileContainer id={selectedProfile.id} />
+                        <div style={{ marginTop: "15px" }}>
+                            <strong>Profile ID:</strong> {selectedProfile.id}
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop:"5px"}}>
+                                {selectedProfile.moderator && <span style={{marginRight:"5px"}}><strong>[Moderator]</strong></span>}
+                                {!selectedProfile.profilePicture && <span style={{marginRight:"5px"}}><strong>[No Profile Picture]</strong></span>}
+                                {selectedProfile.id === localStorage.getItem('defaultProfileId') && <span style={{marginRight:"5px"}}><strong>[Active Profile]</strong></span>}
+                            </div>
+                        </div>
+                        <div style={{ marginTop: "15px", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <a style={{marginRight:"10px"}} className="button" href={`/profile/${selectedProfile.id}`}>Edit Profile</a>
+                            <a className="button" href={`/profile/import/qrgen/${selectedProfile.id}`}>Generate QR Code</a>
+                        </div>
+                        {selectedProfile.id !== localStorage.getItem('defaultProfileId') && <button style={{marginTop:"10px"}} onClick={setDefaultProfile}>Set as Active Profile</button>}
+                        <div style={{ marginTop: "10px", display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection:"column" }}>
+                            <button className="destructive-button" onClick={deleteProfileGlobal}>Delete Profile (for everyone)</button>
+                            <button className="destructive-button" onClick={deleteProfileLocal}>Delete Profile (this device)</button>
+                        </div>
+                    </div>
+                )}
+            </div>
             <h2>Advanced Options</h2>
-            <button className="destructive-button" onClick={localDataWipe}>Remove ALL PROFILES (this browser)</button>
-            <button className="destructive-button" onClick={globalDataWipe}>Remove ALL PROFILES (for everyone)</button>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: "column" }}>
+                <button className="destructive-button" onClick={localDataWipe}>Remove ALL PROFILES (this browser)</button>
+                <button className="destructive-button" onClick={globalDataWipe}>Remove ALL PROFILES (for everyone)</button>
+            </div>
         </>
     );
 }

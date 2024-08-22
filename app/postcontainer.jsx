@@ -27,7 +27,7 @@ export default function PostContainer() {
           setCurrentProfile(data);
         });
       } else if (!alertShown.current) {
-        alert("Welcome! Apparently it's your first time here. You can view posts without a profile, but you'll need to create (or import) one to post. Visit the Profile Manager to get started.");
+        alert("Welcome! Apparently it's your first time here. You can view posts without a profile, but you'll need to create (or import) one to post. The Profile Manager can be found in the top right corner.");
         alertShown.current = true; // Set the ref to true after showing the alert
       }
     }
@@ -44,11 +44,6 @@ export default function PostContainer() {
 
   return (
     <>
-      <p>
-        Current profile: {currentProfileId ? `${currentProfile.displayname} (@${currentProfile.username})` : `[no profile]`} <a className="button" href="/profile">Profile Manager</a>
-      </p>
-      <button onClick={fetchPosts}>Reload Posts</button>
-      <a href="/post" className='button'>Write a Post</a>
       {posts
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         .map((post) => {
@@ -77,12 +72,17 @@ export default function PostContainer() {
                 <img width="48" height="48" src={author.profilePicture || 'https://img.icons8.com/fluency/48/person-male.png'} />
                 <div className="text-container">
                   <strong>{author.displayname}</strong>
-                  <br />@{author.username} - posted on {formattedDateTime}
+                  <br />@{author.username}
+                  <div style={{fontSize:"10px", marginTop:"3px"}}>
+                    <em>posted on {formattedDateTime}</em>
+                  </div>
                 </div>
               </div>
               <p>{post.content}</p>
-              <DeleteButton id={post.id} fetchFunction={fetchPosts} />
-              <a href={`/post/${post.id}`} className='button'>Edit</a>
+              <div className="post-buttons">
+                  <DeleteButton id={post.id} fetchFunction={fetchPosts} />
+                  <a href={`/post/${post.id}`} title="Edit post" className='button'><img src="https://img.icons8.com/?size=24&id=86372&format=png&color=FFFFFF"/></a>
+              </div>
             </div>
           );
         })}

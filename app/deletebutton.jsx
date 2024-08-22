@@ -30,6 +30,6 @@ export default function DeleteButton({id, fetchFunction}) {
     }
 
     return (
-        <button onClick={deletePost}>Delete</button>
+        <button onClick={deletePost} title="Delete post"><img src="https://img.icons8.com/?size=24&id=84930&format=png&color=FFFFFF"/></button>
     );
 }

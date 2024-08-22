@@ -6,6 +6,10 @@ body {
     color: white;
 }
 
+h1,h2{
+    text-align: center;
+}
+
 button,
 input,
 textarea {
@@ -16,6 +20,10 @@ textarea {
 input, textarea {
     background-color: black !important;
     color: white !important;
+}
+
+a {
+    color: inherit;
 }
 
 .button, button {
@@ -30,6 +38,13 @@ input, textarea {
     text-decoration: none;
     cursor: pointer;
 }
+
+.image-button {
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}   
 
 .destructive-button {
     background-color: #dc3545;
@@ -54,6 +69,7 @@ input, textarea {
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
+    position: relative;
 }
 
 .post strong {
@@ -75,6 +91,71 @@ input, textarea {
     height: 48px;
 }
 
+.post-buttons {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    gap: 10px; /* Add some space between buttons */
+}
+
+.post-buttons img{
+    width: 24px;
+    height: 24px;
+}
+
+.post-buttons button, .post-buttons .button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0px;
+}
+
+.active-profile-container {
+    display: flex;
+    align-items: center;
+    float: right;
+}
+
+.active-profile-container img {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+}
+
+.active-profile-container a {
+    text-decoration: none;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Align items vertically centered */
+    padding: 0 20px; /* Optional: Add some padding for better spacing */
+}
+
+.header-container h1 {
+    flex-grow: 1; /* Allow the h1 to grow and take available space */
+    text-align: center; /* Center the text inside the h1 */
+}
+
 .text-container {
     margin-left: 10px
+}
+
+.hide-on-mobile {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .hide-on-mobile {
+        display: none;
+    }
+}
+
+.about-page p{
+    text-align: center;
+}
+
+.about-page .header-container{
+    margin-top: 20px;
 }
