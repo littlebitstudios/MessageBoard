@@ -2,6 +2,8 @@
 
 body {
     font-family: Inter, sans-serif;
+    background-color: black;
+    color: white;
 }
 
 button,
@@ -69,5 +71,5 @@ textarea {
 }
 
 .text-container {
-    margin-left: 10px;
+    margin-left: 10px
 }
