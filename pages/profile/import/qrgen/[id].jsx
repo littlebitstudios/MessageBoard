@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import QRCode from 'qrcode.react';
 import '/styles/main.css';
+import ProfileContainer from '/app/profilecontainer';
 
 export default function Page() {
     const params = useRouter();
@@ -33,15 +34,17 @@ export default function Page() {
 
     return (
         <>
-            <h1>Profile QR Code</h1>
-            <p>
-                QR code for {profile.displayname} (@{profile.username})<br/>
-                Scan this QR code with a phone to import this profile.
-            </p>
-            {origin && <QRCode value={`${origin}/profile/import/${profileId}`} />}
-            <p>
-                <a className="button" href="/profile">Return to Profile Manager</a>
-            </p>
+            <div className="header-container">
+                <a href="/profile" title="Return to Profile Manager" className='image-button'><img src="https://img.icons8.com/?size=32&id=86960&format=png&color=FFFFFF" /></a>
+                <h1 style={{marginRight: "2%"}} className="hide-on-mobile">Edit Profile</h1>
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", marginBottom: "5px" }}>
+                    <ProfileContainer id={profileId} />
+                    <p style={{marginTop:"7px"}}>Scan the QR code below to import this profile to another device.</p>
+                </div>
+                {origin && <QRCode value={`${origin}/profile/import/${profileId}`} />}
+            </div>
         </>
     );
 }

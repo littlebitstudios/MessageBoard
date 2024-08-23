@@ -9,7 +9,10 @@ export default function Page() {
 
   return (
     <>
-      <h1>Edit Profile</h1>
+      <div className="header-container">
+        <a href="/profile" title="Back to Profile Manager" className='image-button'><img src="https://img.icons8.com/?size=32&id=86960&format=png&color=FFFFFF"/></a>
+        <h1 className="hide-on-mobile">Edit Profile</h1>
+      </div>
       <EditProfileForm profileId={params.query.id}/>
     </>
   );
