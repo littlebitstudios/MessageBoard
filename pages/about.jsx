@@ -1,9 +1,14 @@
 import React from 'react';
 import '/styles/main.css';
+import Head from 'next/head';
 
 export default function Page() {
   return (
     <div className="about-page">
+      <Head>
+        <title>About LittleBit's Message Board</title>
+        <meta name="description" content="A very simple message board." />
+      </Head>
       <div className="header-container">
         <a href="/" title="Back to main page" className='image-button'><img src="https://img.icons8.com/?size=32&id=86960&format=png&color=FFFFFF" /></a>
       </div>
